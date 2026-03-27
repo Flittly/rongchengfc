@@ -1,0 +1,12 @@
+﻿<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'>
+  <defs>
+    <linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'>
+      <stop offset='0%' stop-color='#ad1f23' />
+      <stop offset='100%' stop-color='#371012' />
+    </linearGradient>
+  </defs>
+  <rect width='1200' height='800' fill='url(#g)' />
+  <circle cx='980' cy='170' r='180' fill='rgba(255,255,255,0.16)' />
+  <rect x='80' y='560' width='1040' height='180' fill='rgba(0,0,0,0.2)' rx='24' />
+  <text x='100' y='650' font-size='72' fill='white' font-family='Arial, sans-serif'>Home Jersey - Front</text>
+</svg>

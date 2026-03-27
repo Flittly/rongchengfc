@@ -1,73 +1,145 @@
-# React + TypeScript + Vite
+﻿# 成都蓉城足球俱乐部官网（CD Rangers FC）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+基于 **Next.js App Router + Prisma + PostgreSQL + NextAuth** 的全栈项目，覆盖：
 
-Currently, two official plugins are available:
+- 用户注册、邮箱验证、登录、角色权限（普通用户 / 管理员）
+- 赛程与结果、比赛详情
+- 球队模块（一线队 / 梯队 / 教练组）与球员详情
+- 新闻中心（分类筛选 + 分页）
+- 票务信息（模拟）
+- 官方商店（模拟，多角度图片、价格、库存）
+- 关于俱乐部
+- 用户偏好与收藏
+- 管理员后台（示例：发布新闻）
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 技术栈
 
-## React Compiler
+- 前端：React 19 + Next.js 16（App Router）
+- 样式：Tailwind CSS 4
+- 数据库：PostgreSQL
+- ORM：Prisma 7
+- 认证：NextAuth（Credentials）
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 项目结构
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```txt
+src/
+  app/
+    (页面路由 + API Route Handlers)
+  components/
+    layout/
+    site/
+    ui/
+  lib/
+    auth.ts
+    prisma.ts
+    data.ts
+    session.ts
+    validation.ts
+prisma/
+  schema.prisma
+  seed.mjs
+scripts/
+  scrape-cdrcfc.mjs
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 环境变量
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+复制 `.env.example` 为 `.env.local` 并修改：
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/rongchengfc?schema=public"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="replace-with-strong-random-secret"
 ```
+
+## 安装与运行
+
+1. 安装依赖
+
+```bash
+npm install
+```
+
+2. 生成 Prisma Client
+
+```bash
+npm run prisma:generate
+```
+
+3. 创建/同步数据库结构
+
+```bash
+npm run prisma:migrate -- --name init
+# 或开发期快速同步
+npm run db:push
+```
+
+4. 写入种子数据
+
+```bash
+npm run prisma:seed
+```
+
+5. 启动开发环境
+
+```bash
+npm run dev
+```
+
+访问：<http://localhost:3000>
+
+## 默认测试账号（种子）
+
+- 管理员：`admin@cdrfc.cn` / `Admin@123456`
+- 普通用户：`fan@cdrfc.cn` / `User@123456`
+
+## 生产构建
+
+```bash
+npm run build
+npm run start
+```
+
+## 数据抓取脚本（初始化参考）
+
+已提供脚本：`scripts/scrape-cdrcfc.mjs`
+
+用途：从 `https://www.cdrcfc.com.cn` 抓取新闻和队伍基础信息并输出为 JSON。
+
+```bash
+npm run scrape:cdrcfc
+```
+
+输出目录：`data/scraped/`
+
+## 主要 API
+
+- `POST /api/auth/register`：注册并生成邮箱验证链接
+- `GET /api/auth/verify-email?token=...`：验证邮箱
+- `GET /api/matches`：比赛列表
+- `GET /api/news`：新闻列表（分类/分页）
+- `GET /api/products`：商品列表
+- `GET/PUT /api/user/preferences`：用户偏好
+- `GET/POST/DELETE /api/user/favorites`：用户收藏
+- `POST /api/admin/news`：管理员发布新闻
+
+## 代码规范与提交建议
+
+- Lint：
+
+```bash
+npm run lint
+```
+
+- 提交信息建议遵循 Conventional Commits：
+  - `feat: ...`
+  - `fix: ...`
+  - `refactor: ...`
+  - `docs: ...`
+
+## 说明
+
+- 本项目当前以 SSR 动态渲染为主，便于实时读取数据库内容。
+- 图片已统一走 `next/image`。
+- SEO 基础文件已配置：`metadata`、`robots.txt`、`sitemap.xml`。
