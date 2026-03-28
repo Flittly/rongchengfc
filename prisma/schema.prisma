@@ -128,33 +128,48 @@ model Match {
 }
 
 model Player {
-  id           String          @id @default(cuid())
-  slug         String          @unique
-  name         String
-  jerseyNumber Int?
-  position     String
-  nationality  String
-  birthDate    DateTime
-  heightCm     Int?
-  weightKg     Int?
-  bio          String
-  portraitUrl  String
-  squad        SquadType       @default(FIRST_TEAM)
-  appearances  Int             @default(0)
-  goals        Int             @default(0)
-  assists      Int             @default(0)
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  moments      PlayerMoment[]
+  id                 String          @id @default(cuid())
+  slug               String          @unique
+  name               String
+  sourcePlayerId     String?         @unique
+  sourceUrl          String?
+  jerseyNumber       Int?
+  position           String
+  nationality        String
+  birthDate          DateTime
+  heightCm           Int?
+  weightKg           Int?
+  bio                String
+  portraitUrl        String
+  currentClub        String?
+  preferredFoot      String?
+  careerSummary      Json?
+  abilities          Json?
+  clubStats          Json?
+  cupStats           Json?
+  internationalStats Json?
+  honours            Json?
+  squad              SquadType       @default(FIRST_TEAM)
+  appearances        Int             @default(0)
+  goals              Int             @default(0)
+  assists            Int             @default(0)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  moments            PlayerMoment[]
 }
 
 model PlayerMoment {
   id        String   @id @default(cuid())
   title     String
   videoUrl  String
+  imageUrl  String?
+  matchUrl  String?
+  sourceKey String?
   sortOrder Int      @default(0)
   playerId  String
   player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, sourceKey])
 }
 
 model NewsPost {

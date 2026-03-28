@@ -32,6 +32,19 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+.venv/
+__pycache__/
+*.pyc
+
+# scraped / processed data artifacts
+/data/scraped/
+/data/raw-images/
+/data/raw-images-sample/
+/data/processed-images/
+/data/processed-images-sample/
+/public/images/cdrcfc/
+/public/images/cdrcfc-sample/
+/tmp_*.html
 
 # vercel
 .vercel

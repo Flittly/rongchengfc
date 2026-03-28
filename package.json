@@ -11,7 +11,10 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "node prisma/seed.mjs",
     "db:push": "prisma db push",
-    "scrape:cdrcfc": "node scripts/scrape-cdrcfc.mjs"
+    "scrape:cdrcfc": "node scripts/scrape-cdrcfc.mjs",
+    "images:collect": "uv run --project ops/pg_sync/python python ops/pg_sync/python/collect_cdrcfc_images.py",
+    "images:process": "uv run --project ops/pg_sync/python python ops/pg_sync/python/process_cdrcfc_images.py",
+    "images:process:ai": "uv run --project ops/pg_sync/python python ops/pg_sync/python/process_cdrcfc_images.py --use-ai-wrapper"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",

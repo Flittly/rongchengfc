@@ -113,6 +113,24 @@ npm run scrape:cdrcfc
 
 输出目录：`data/scraped/`
 
+## PostgreSQL SQL + Python 同步目录
+
+已新增独立目录：`ops/pg_sync/`，用于数据库 SQL 和 Python 同步脚本管理。
+
+- SQL：`ops/pg_sync/sql/`
+- Python：`ops/pg_sync/python/`
+- 说明文档：`ops/pg_sync/README.md`
+
+常用命令：
+
+```bash
+uv sync --project ops/pg_sync/python
+uv run --project ops/pg_sync/python python ops/pg_sync/python/run_sql_sync.py --include-bootstrap
+uv run --project ops/pg_sync/python python ops/pg_sync/python/run_sql_sync.py
+uv run --project ops/pg_sync/python python ops/pg_sync/python/crawl_cdrcfc.py
+uv run --project ops/pg_sync/python python ops/pg_sync/python/sync_crawled_to_pg.py --sync-app
+```
+
 ## 主要 API
 
 - `POST /api/auth/register`：注册并生成邮箱验证链接

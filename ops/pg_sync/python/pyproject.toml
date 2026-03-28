@@ -1,0 +1,14 @@
+[project]
+name = "cdrfc-pg-sync"
+version = "0.1.0"
+description = "PostgreSQL sync and crawler scripts for CD Rangers FC project"
+requires-python = ">=3.10"
+dependencies = [
+  "beautifulsoup4==4.12.3",
+  "pillow==11.2.1",
+  "psycopg[binary]==3.2.9",
+  "requests==2.32.3",
+]
+
+[tool.uv]
+package = false
